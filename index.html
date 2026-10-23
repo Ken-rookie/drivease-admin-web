@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b2542">
+  <title>DriveEase Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-art">
+      <div class="brand brand-large"><span class="brand-mark"><i data-lucide="car-front"></i></span><span><b>Drive<span>Ease</span></b><small>Admin Panel</small></span></div>
+      <div class="auth-message"><p class="eyebrow">DRIVE WITH CONFIDENCE</p><h1>Everything you need<br>to run your rental business.</h1><p>Manage bookings, vehicles, customers and payments in one clear workspace.</p></div>
+      <div class="auth-foot">A simpler way to keep every journey moving.</div>
+    </div>
+    <div class="auth-panel"><form id="loginForm" class="login-card">
+      <div class="mobile-brand brand"><span class="brand-mark"><i data-lucide="car-front"></i></span><span><b>Drive<span>Ease</span></b><small>Admin Panel</small></span></div>
+      <p class="eyebrow">ADMIN ACCESS</p><h2>Welcome back</h2><p class="muted">Sign in using your DriveEase administrator account.</p>
+      <label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" placeholder="admin@example.com" required>
+      <label for="loginPassword">Password</label><div class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required><button type="button" class="icon-button" id="togglePassword" aria-label="Show password"><i data-lucide="eye"></i></button></div>
+      <button class="btn btn-primary btn-full" type="submit"><span>Sign in</span><i data-lucide="arrow-right"></i></button>
+      <p id="loginError" class="form-error" role="alert"></p><p class="auth-note"><i data-lucide="shield-check"></i> Protected by Supabase authentication</p>
+    </form><p class="auth-copyright">© <span id="yearNow"></span> DriveEase · Admin workspace</p></div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand brand"><span class="brand-mark"><i data-lucide="car-front"></i></span><span><b>Drive<span>Ease</span></b><small>Admin Panel</small></span><button id="closeSidebar" class="icon-button sidebar-close" aria-label="Close menu"><i data-lucide="x"></i></button></div>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav id="mainNav" class="main-nav">
+        <button class="nav-link active" data-page="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+        <button class="nav-link" data-page="bookings"><i data-lucide="calendar-days"></i><span>Bookings</span><em id="pendingBadge" class="nav-badge hidden">0</em></button>
+        <button class="nav-link" data-page="vehicles"><i data-lucide="car-front"></i><span>Fleet / Vehicles</span></button>
+        <button class="nav-link" data-page="customers"><i data-lucide="users"></i><span>Customers</span></button>
+        <button class="nav-link" data-page="payments"><i data-lucide="credit-card"></i><span>Payments</span></button>
+        <button class="nav-link" data-page="locations"><i data-lucide="map-pin"></i><span>Locations</span></button>
+        <button class="nav-link" data-page="addons"><i data-lucide="puzzle"></i><span>Add-ons</span></button>
+        <button class="nav-link" data-page="reviews"><i data-lucide="star"></i><span>Reviews</span></button>
+        <button class="nav-link" data-page="agreements"><i data-lucide="file-text"></i><span>Rental Agreements</span></button>
+        <button class="nav-link" data-page="reports"><i data-lucide="chart-no-axes-combined"></i><span>Reports</span></button>
+        <button class="nav-link" data-page="policies"><i data-lucide="shield-check"></i><span>Rental Policies</span></button>
+        <button class="nav-link" data-page="settings"><i data-lucide="settings"></i><span>Settings</span></button>
+      </nav>
+      <div class="sidebar-bottom"><div class="help-card"><div class="help-icon"><i data-lucide="headset"></i></div><div><b>Need a hand?</b><p>Get help with your admin panel.</p></div><a href="mailto:support@driveease.example" class="btn btn-outline-light btn-small">Contact support</a></div><div class="sidebar-version">DriveEase Admin Panel <span>v1.0.0</span></div></div>
+    </aside>
+    <div id="sidebarScrim" class="sidebar-scrim"></div>
+    <main class="main-area">
+      <header class="topbar"><button id="menuToggle" class="icon-button menu-toggle" aria-label="Open menu"><i data-lucide="menu"></i></button><div class="global-search"><i data-lucide="search"></i><input id="globalSearch" placeholder="Search bookings, vehicles, customers..." aria-label="Search current page"></div><div class="topbar-right"><button class="icon-button notification-button" id="refreshButton" title="Refresh data"><i data-lucide="refresh-cw"></i></button><div class="top-divider"></div><div class="admin-profile"><div class="avatar" id="adminInitials">AD</div><div class="admin-copy"><b id="adminName">Administrator</b><small>Administrator</small></div><button class="icon-button" id="accountMenuButton" aria-label="Account menu"><i data-lucide="chevron-down"></i></button><div id="accountMenu" class="account-menu hidden"><button id="signOutButton"><i data-lucide="log-out"></i> Sign out</button></div></div></div></header>
+      <section class="page-wrap"><div id="pageContent"><div class="loading-state"><span class="spinner"></span><p>Loading your workspace…</p></div></div></section>
+      <footer class="main-footer"><span>© <span id="footerYear"></span> DriveEase</span><span>Built to make your day easier <i data-lucide="heart"></i></span></footer>
+    </main>
+  </div>
+  <div id="modalRoot"></div><div id="toastRoot" class="toast-root" aria-live="polite"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
